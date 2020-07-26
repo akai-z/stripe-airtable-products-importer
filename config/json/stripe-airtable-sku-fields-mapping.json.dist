@@ -1,0 +1,6 @@
+{
+  "id": "<AIRTABLE_PRODUCT_ID_FIELD>",
+  "price": "<AIRTABLE_PRICE_FIELD>",
+  "product": "<AIRTABLE_PRODUCT_ID_FIELD>",
+  "image": "<AIRTABLE_IMAGE_URL_FIELD>"
+}
