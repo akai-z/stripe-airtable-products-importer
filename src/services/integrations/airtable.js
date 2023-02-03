@@ -1,3 +1,5 @@
+'use strict'
+
 const airtable = require('airtable')
 const jsonConfig = rootRequire('services/config/json')
 
@@ -6,8 +8,7 @@ const table = base(process.env.AIRTABLE_TABLE)
 const selectFields = 'airtable-fields'
 
 function baseInit() {
-  return new airtable({apiKey: process.env.AIRTABLE_API_KEY})
-    .base(process.env.AIRTABLE_BASE)
+  return new airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE)
 }
 
 function list(page) {
@@ -42,9 +43,7 @@ function recentListTimeFilter(timeFrom = null) {
   if (!timeFrom) {
     const date = new Date()
 
-    date.setSeconds(
-      date.getSeconds() - process.env.AIRTABLE_RECENT_RECORDS_INTERVAL
-    )
+    date.setSeconds(date.getSeconds() - process.env.AIRTABLE_RECENT_RECORDS_INTERVAL)
 
     timeFrom = date.toISOString()
   }
@@ -53,10 +52,7 @@ function recentListTimeFilter(timeFrom = null) {
     process.env.AIRTABLE_LAST_MODIFIED_TIME_FIELD,
     timeFrom
   )
-  const createdTimefilter = timeFromFilterFormula(
-    process.env.AIRTABLE_CREATED_TIME_FIELD,
-    timeFrom
-  )
+  const createdTimefilter = timeFromFilterFormula(process.env.AIRTABLE_CREATED_TIME_FIELD, timeFrom)
 
   return `OR(${lastModifiedTimefilter}, ${createdTimefilter})`
 }

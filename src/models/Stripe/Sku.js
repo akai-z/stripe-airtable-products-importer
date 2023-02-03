@@ -1,3 +1,5 @@
+'use strict'
+
 const AbstractModel = rootRequire('models/AbstractModel')
 
 const airtableFieldsMapping = 'stripe-airtable-sku-fields-mapping'
@@ -63,10 +65,7 @@ class Sku extends AbstractModel {
   }
 
   set product(product) {
-    this._product = this.prefixedId(
-      product,
-      process.env.STRIPE_PRODUCT_ID_PREFIX
-    )
+    this._product = this.prefixedId(product, process.env.STRIPE_PRODUCT_ID_PREFIX)
   }
 
   get image() {
@@ -78,10 +77,7 @@ class Sku extends AbstractModel {
   }
 
   setMappedData(data) {
-    return super.setMappedData(
-      data,
-      this.fieldsMappingConfig(airtableFieldsMapping)
-    )
+    return super.setMappedData(data, this.fieldsMappingConfig(airtableFieldsMapping))
   }
 }
 

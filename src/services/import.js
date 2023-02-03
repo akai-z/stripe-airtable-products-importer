@@ -1,3 +1,5 @@
+'use strict'
+
 const airtable = rootRequire('services/integrations/airtable')
 const stripe = rootRequire('services/integrations/stripe')
 const StripeProductModel = rootRequire('models/Stripe/Product')
@@ -56,10 +58,7 @@ async function addAirtableListToStripeOnDuplicate(records, fetchNextPage) {
   const newSkus = { ...data.skus }
 
   for await (const stripeProduct of stripe.productsList(data.productIds)) {
-    const productId = stripeProduct.id.replace(
-      process.env.STRIPE_PRODUCT_ID_PREFIX,
-      ''
-    )
+    const productId = stripeProduct.id.replace(process.env.STRIPE_PRODUCT_ID_PREFIX, '')
 
     delete newProducts[productId]
 
@@ -78,27 +77,25 @@ async function addAirtableListToStripeOnDuplicate(records, fetchNextPage) {
   }
 
   for await (const stripeSku of stripe.skusList(data.skuIds)) {
-    const skuId = stripeSku.id.replace(
-      process.env.STRIPE_SKU_ID_PREFIX,
-      ''
-    )
+    const skuId = stripeSku.id.replace(process.env.STRIPE_SKU_ID_PREFIX, '')
 
     delete newSkus[skuId]
 
     if (!data.skus[skuId]) {
       data.skus[skuId].attributes = {
-        "name": data.products[skuId].data.name
+        name: data.products[skuId].data.name
       }
 
       await stripe.createSku(data.skus[skuId])
       continue
     }
 
-    if (isStripeDataUpdatable(stripeSku, data.skus[skuId].data)
-      || stripeSku.attributes.name != data.products[skuId].data.name
+    if (
+      isStripeDataUpdatable(stripeSku, data.skus[skuId].data) ||
+      stripeSku.attributes.name != data.products[skuId].data.name
     ) {
       data.skus[skuId].attributes = {
-        "name": data.products[skuId].data.name
+        name: data.products[skuId].data.name
       }
 
       await stripe.updateSku(data.skus[skuId])
@@ -121,23 +118,15 @@ function stripeAirtableRecordsData(records) {
     skuIds: []
   }
 
-  records.forEach(record => {
-    const productId = [
-      process.env.STRIPE_PRODUCT_ID_PREFIX,
-      record.fields.productId
-    ].join('')
-    const skuId = [
-      process.env.STRIPE_SKU_ID_PREFIX,
-      record.fields.productId
-    ].join('')
+  records.forEach((record) => {
+    const productId = [process.env.STRIPE_PRODUCT_ID_PREFIX, record.fields.productId].join('')
+    const skuId = [process.env.STRIPE_SKU_ID_PREFIX, record.fields.productId].join('')
 
     data.productIds.push(productId)
     data.skuIds.push(skuId)
 
-    data.products[record.fields.productId] = new StripeProductModel()
-      .setMappedData(record.fields)
-    data.skus[record.fields.productId] = new StripeSkuModel()
-      .setMappedData(record.fields)
+    data.products[record.fields.productId] = new StripeProductModel().setMappedData(record.fields)
+    data.skus[record.fields.productId] = new StripeSkuModel().setMappedData(record.fields)
   })
 
   return data
