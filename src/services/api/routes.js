@@ -1,3 +1,5 @@
+'use strict'
+
 function setRoute(apiApp, method, routeName, handler, jwtCheck = null) {
   if (jwtCheck) {
     apiApp[method](process.env.API_BASE_PATH + routeName, jwtCheck, handler)

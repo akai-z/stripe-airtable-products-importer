@@ -1,10 +1,12 @@
+'use strict'
+
 const jsonConfig = rootRequire('services/config/json')
 
 class AbstractModel {
   get data() {
     const data = {}
 
-    Object.getOwnPropertyNames(this).forEach(property => {
+    Object.getOwnPropertyNames(this).forEach((property) => {
       data[property.replace('_', '')] = this[property]
     })
 
@@ -22,10 +24,9 @@ class AbstractModel {
   get updateData() {
     const data = {}
 
-    Object.getOwnPropertyNames(this).forEach(property => {
-      data[property.replace('_', '')] = typeof this[property] !== 'undefined'
-        ? this[property]
-        : null
+    Object.getOwnPropertyNames(this).forEach((property) => {
+      data[property.replace('_', '')] =
+        typeof this[property] !== 'undefined' ? this[property] : null
     })
 
     return data
@@ -43,18 +44,14 @@ class AbstractModel {
     const data = jsonConfig.data(configFile)
 
     if (!data) {
-      throw new Error(
-        `Stripe ${this.constructor.name} fields mapping is not configured.`
-      )
+      throw new Error(`Stripe ${this.constructor.name} fields mapping is not configured.`)
     }
 
     return data
   }
 
   prefixedId(id, prefix) {
-    return id && prefix && id.toString().indexOf(prefix) !== 0
-      ? prefix + id
-      : id
+    return id && prefix && id.toString().indexOf(prefix) !== 0 ? prefix + id : id
   }
 
   replaceUndefinedValue(value, replacement = null) {

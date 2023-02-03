@@ -1,3 +1,5 @@
+'use strict'
+
 const stripe = require('stripe')(process.env.STRIPE_API_SECRET_KEY, stripeOptions)
 
 function createProduct(product) {
@@ -9,7 +11,7 @@ function product(productId) {
 }
 
 function productsList(productIds) {
-  return stripe.products.list({ "ids": productIds })
+  return stripe.products.list({ ids: productIds })
 }
 
 function updateProduct(product) {
@@ -31,7 +33,7 @@ function sku(skuId) {
 }
 
 function skusList(skuIds) {
-  return stripe.skus.list({ "ids": skuIds })
+  return stripe.skus.list({ ids: skuIds })
 }
 
 function updateSku(sku) {

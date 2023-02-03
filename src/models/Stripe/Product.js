@@ -1,3 +1,5 @@
+'use strict'
+
 const AbstractModel = rootRequire('models/AbstractModel')
 
 const airtableFieldsMapping = 'stripe-airtable-product-fields-mapping'

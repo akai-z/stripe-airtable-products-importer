@@ -1,3 +1,5 @@
+'use strict'
+
 const express = require('express')
 const apiApp = express()
 const jwt = require('express-jwt')
@@ -31,7 +33,7 @@ function setRateLimit() {
 function setRoutes(core) {
   const jwtCheck = checkJwt()
 
-  fs.readdirSync(srcPath('services/api/routes')).forEach(route => {
+  fs.readdirSync(srcPath('services/api/routes')).forEach((route) => {
     rootRequire(`services/api/routes/${route}`).setRoute(apiApp, core, jwtCheck)
   })
 }

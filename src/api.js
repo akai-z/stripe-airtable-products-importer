@@ -1,3 +1,5 @@
+'use strict'
+
 const core = require('./bootstrap')
 const api = rootRequire('services/api')
 

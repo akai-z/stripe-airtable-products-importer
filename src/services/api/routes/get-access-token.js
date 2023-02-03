@@ -1,3 +1,5 @@
+'use strict'
+
 const routes = rootRequire('services/api/routes')
 const got = require('got')
 
@@ -5,7 +7,7 @@ const routeName = 'access-token'
 const httpMethod = 'post'
 
 const requestOptions = {
-  headers: { "content-type": "application/json" },
+  headers: { 'content-type': 'application/json' },
   responseType: 'json',
   resolveBodyOnly: true,
   body: {
@@ -19,10 +21,7 @@ function setRoute(apiApp) {
 }
 
 async function routeHandler(req, res) {
-  const data = await requestAccessToken(
-    req.body.client_id,
-    req.body.client_secret
-  )
+  const data = await requestAccessToken(req.body.client_id, req.body.client_secret)
 
   res.status(201).send(data)
 }
@@ -33,10 +32,7 @@ async function requestAccessToken(clientId, clientSecret) {
   requestOptions.body = JSON.stringify(requestOptions.body)
 
   try {
-    const response = await got.post(
-      `https://${process.env.API_DOMAIN}/oauth/token`,
-      requestOptions
-    )
+    const response = await got.post(`https://${process.env.API_DOMAIN}/oauth/token`, requestOptions)
 
     return response
   } catch (error) {
